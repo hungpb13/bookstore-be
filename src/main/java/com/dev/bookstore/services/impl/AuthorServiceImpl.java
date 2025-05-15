@@ -48,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.save(existingAuthor);
     }
 
+    @Transactional
     @Override
     public Author partialUpdateAuthor(Long id, Author author) {
         Author existingAuthor = authorRepository.findById(id)
@@ -59,5 +60,10 @@ public class AuthorServiceImpl implements AuthorService {
         Optional.ofNullable(author.getImage()).ifPresent(existingAuthor::setImage);
 
         return authorRepository.save(existingAuthor);
+    }
+
+    @Override
+    public void deleteAuthor(Long id) {
+        authorRepository.deleteById(id);
     }
 }
