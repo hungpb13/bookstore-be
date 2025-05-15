@@ -4,6 +4,7 @@ import com.dev.bookstore.domain.dtos.AuthorDto;
 import com.dev.bookstore.domain.entities.Author;
 import com.dev.bookstore.mappers.impl.AuthorMapper;
 import com.dev.bookstore.services.AuthorService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,19 @@ public class AuthorController {
                         new ResponseEntity<>(authorMapper.toDto(foundAuthor), HttpStatus.OK)
                 )
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<AuthorDto> fullUpdateAuthor(
+            @PathVariable Long id,
+            @RequestBody AuthorDto authorDto
+    ) {
+        try {
+            Author authorToUpdate = authorMapper.toEntity(authorDto);
+            Author updatedAuthor = authorService.fullUpdateAuthor(id, authorToUpdate);
+            return new ResponseEntity<>(authorMapper.toDto(updatedAuthor), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

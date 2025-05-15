@@ -10,4 +10,6 @@ public interface AuthorService {
     List<Author> readManyAuthors();
 
     Author readOneAuthor(Long id);
+
+    Author fullUpdateAuthor(Long id, Author author);
 }
