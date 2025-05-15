@@ -23,4 +23,9 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> readManyAuthors() {
         return authorRepository.findAll();
     }
+
+    @Override
+    public Author readOneAuthor(Long id) {
+        return authorRepository.findById(id).orElse(null);
+    }
 }

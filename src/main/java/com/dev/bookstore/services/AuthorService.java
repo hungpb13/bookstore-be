@@ -8,4 +8,6 @@ public interface AuthorService {
     Author createAuthor(Author author);
 
     List<Author> readManyAuthors();
+
+    Author readOneAuthor(Long id);
 }
