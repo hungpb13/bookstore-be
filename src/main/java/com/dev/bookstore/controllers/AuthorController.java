@@ -64,4 +64,18 @@ public class AuthorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<AuthorDto> partialUpdateAuthor(
+            @PathVariable Long id,
+            @RequestBody AuthorDto authorDto
+    ) {
+        try {
+            Author authorToUpdate = authorMapper.toEntity(authorDto);
+            Author updatedAuthor = authorService.partialUpdateAuthor(id, authorToUpdate);
+            return new ResponseEntity<>(authorMapper.toDto(updatedAuthor), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -12,4 +12,6 @@ public interface AuthorService {
     Author readOneAuthor(Long id);
 
     Author fullUpdateAuthor(Long id, Author author);
+
+    Author partialUpdateAuthor(Long id, Author author);
 }
