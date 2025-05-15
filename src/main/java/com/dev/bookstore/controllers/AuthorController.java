@@ -7,10 +7,9 @@ import com.dev.bookstore.services.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/authors")
@@ -27,5 +26,13 @@ public class AuthorController {
         Author createdAuthor = authorService.createAuthor(authorToCreate);
         AuthorDto createdAuthorDto = authorMapper.toDto(createdAuthor);
         return new ResponseEntity<>(createdAuthorDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public List<AuthorDto> readManyAuthors() {
+        return authorService.readManyAuthors()
+                .stream()
+                .map(authorMapper::toDto)
+                .toList();
     }
 }
