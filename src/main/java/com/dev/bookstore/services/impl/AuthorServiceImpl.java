@@ -16,6 +16,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author createAuthor(Author author) {
+        if (author.getId() != null)
+            throw new IllegalArgumentException("Cannot create author with an ID!");
         return authorRepository.save(author);
     }
 

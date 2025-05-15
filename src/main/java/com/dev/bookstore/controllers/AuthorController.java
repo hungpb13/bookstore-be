@@ -23,10 +23,14 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
-        Author authorToCreate = authorMapper.toEntity(authorDto);
-        Author createdAuthor = authorService.createAuthor(authorToCreate);
-        AuthorDto createdAuthorDto = authorMapper.toDto(createdAuthor);
-        return new ResponseEntity<>(createdAuthorDto, HttpStatus.CREATED);
+        try {
+            Author authorToCreate = authorMapper.toEntity(authorDto);
+            Author createdAuthor = authorService.createAuthor(authorToCreate);
+            AuthorDto createdAuthorDto = authorMapper.toDto(createdAuthor);
+            return new ResponseEntity<>(createdAuthorDto, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
