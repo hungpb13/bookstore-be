@@ -15,4 +15,6 @@ public interface BookService {
     Book readOneBook(String isbn);
 
     Book partialUpdateBook(String isbn, BookUpdateRequest bookUpdateRequest);
+
+    void deleteBook(String isbn);
 }
