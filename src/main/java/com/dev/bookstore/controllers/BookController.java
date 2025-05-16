@@ -1,0 +1,40 @@
+package com.dev.bookstore.controllers;
+
+import com.dev.bookstore.domain.dtos.BookSummaryDto;
+import com.dev.bookstore.domain.entities.Book;
+import com.dev.bookstore.domain.requests.BookSummary;
+import com.dev.bookstore.domain.responses.BookResponse;
+import com.dev.bookstore.mappers.impl.BookMapper;
+import com.dev.bookstore.services.BookService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(path = "/v1/books")
+@RequiredArgsConstructor
+public class BookController {
+
+    private final BookService bookService;
+
+    private final BookMapper bookMapper;
+
+    @PutMapping(path = "/{isbn}")
+    public ResponseEntity<BookSummaryDto> createAndFullUpdateBook(
+            @PathVariable String isbn,
+            @RequestBody BookSummaryDto bookSummaryDto
+    ) {
+        try {
+            BookSummary bookSummary = bookMapper.toBookSummary(bookSummaryDto);
+            BookResponse bookResponse = bookService.createAndFullUpdateBook(isbn, bookSummary);
+            Book savedBook = bookResponse.getBook();
+            boolean isCreated = bookResponse.isCreate();
+            HttpStatus responseCode = isCreated ? HttpStatus.CREATED : HttpStatus.OK;
+            return new ResponseEntity<>(bookMapper.toBookSummaryDto(savedBook), responseCode);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+}
