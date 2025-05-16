@@ -9,5 +9,5 @@ import java.util.List;
 public interface BookService {
     BookResponse createAndFullUpdateBook(String isbn, BookSummary bookSummary);
 
-    List<Book> readManyBooks();
+    List<Book> readManyBooks(Long authorId);
 }

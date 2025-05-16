@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +42,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookSummaryDto> readManyBooks() {
-        List<Book> books = bookService.readManyBooks();
+    public List<BookSummaryDto> readManyBooks(@Nullable @RequestParam("author") Long authorId) {
+        List<Book> books = bookService.readManyBooks(authorId);
         return books.stream()
                 .map(bookMapper::toBookSummaryDto)
                 .toList();
