@@ -3,6 +3,7 @@ package com.dev.bookstore.services.impl;
 import com.dev.bookstore.domain.entities.Author;
 import com.dev.bookstore.domain.entities.Book;
 import com.dev.bookstore.domain.requests.BookSummary;
+import com.dev.bookstore.domain.requests.BookUpdateRequest;
 import com.dev.bookstore.domain.responses.BookResponse;
 import com.dev.bookstore.mappers.impl.BookMapper;
 import com.dev.bookstore.repositories.AuthorRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +56,17 @@ public class BookServiceImpl implements BookService {
     public Book readOneBook(String isbn) {
         return bookRepository.findById(isbn)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+    }
+
+    @Override
+    public Book partialUpdateBook(String isbn, BookUpdateRequest bookUpdateRequest) {
+        Book existingBook = bookRepository.findById(isbn)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+
+        Optional.ofNullable(bookUpdateRequest.getTitle()).ifPresent(existingBook::setTitle);
+        Optional.ofNullable(bookUpdateRequest.getDescription()).ifPresent(existingBook::setDescription);
+        Optional.ofNullable(bookUpdateRequest.getImage()).ifPresent(existingBook::setImage);
+
+        return bookRepository.save(existingBook);
     }
 }

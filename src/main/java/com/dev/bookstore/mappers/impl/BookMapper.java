@@ -3,10 +3,12 @@ package com.dev.bookstore.mappers.impl;
 import com.dev.bookstore.domain.dtos.AuthorSummaryDto;
 import com.dev.bookstore.domain.dtos.BookDto;
 import com.dev.bookstore.domain.dtos.BookSummaryDto;
+import com.dev.bookstore.domain.dtos.BookUpdateRequestDto;
 import com.dev.bookstore.domain.entities.Author;
 import com.dev.bookstore.domain.entities.Book;
 import com.dev.bookstore.domain.requests.AuthorSummary;
 import com.dev.bookstore.domain.requests.BookSummary;
+import com.dev.bookstore.domain.requests.BookUpdateRequest;
 import com.dev.bookstore.mappers.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -61,5 +63,9 @@ public class BookMapper implements Mapper<Book, BookDto> {
                 .image(entity.getImage())
                 .author(authorSummaryDto)
                 .build();
+    }
+
+    public BookUpdateRequest toBookUpdateRequest(BookUpdateRequestDto bookUpdateRequestDto) {
+        return modelMapper.map(bookUpdateRequestDto, BookUpdateRequest.class);
     }
 }
