@@ -48,4 +48,14 @@ public class BookController {
                 .map(bookMapper::toBookSummaryDto)
                 .toList();
     }
+
+    @GetMapping(path = "/{isbn}")
+    public ResponseEntity<BookSummaryDto> readOneBook(@PathVariable String isbn) {
+        try {
+            Book book = bookService.readOneBook(isbn);
+            return new ResponseEntity<>(bookMapper.toBookSummaryDto(book), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

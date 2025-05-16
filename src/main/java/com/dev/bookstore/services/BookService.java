@@ -10,4 +10,6 @@ public interface BookService {
     BookResponse createAndFullUpdateBook(String isbn, BookSummary bookSummary);
 
     List<Book> readManyBooks(Long authorId);
+
+    Book readOneBook(String isbn);
 }
